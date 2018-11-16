@@ -21,7 +21,7 @@
  *
  */
 
-const writer = require('./xmi21-writer')
+const writer = require('./xmi25-writer')
 
 // Core ....................................................................
 
@@ -50,6 +50,18 @@ writer.elements['Model'] = function (elem) {
       writer.writeElement(json, 'ownedRule', e)
     } else if (e instanceof type.UMLConnector && elem instanceof type.UMLPort) {
       // Connectors will be included in the Port's parent Classifier as 'ownedConnector'
+    } else if (e instanceof type.UMLUndirectedRelationship || 
+               e instanceof type.UMLAssociation ||
+               e instanceof type.UMLCommunicationPath || 
+               e instanceof type.UndirectedRelationship || 
+               e instanceof type.Relationship) {
+      // Relationships are owned by the package (and not the classifier)
+      var fun = writer.elements[e.getClassName()]
+      var node = null
+      if (fun) {
+        node = fun(e)
+        writer.addToDeferedNode(node)
+      }     
     } else {
       if (elem instanceof type.UMLPackage) {
         writer.writeElement(json, 'packagedElement', e)
