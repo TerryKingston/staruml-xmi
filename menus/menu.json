@@ -11,7 +11,8 @@
       "id": "file.export",
       "submenu": [
         { "type": "separator" },
-        { "label": "XMI Export (v2.1)...", "id": "file.import.xmi.export", "command": "xmi:export" }
+        { "label": "XMI Export (v2.1)...", "id": "file.import.xmi.export", "command": "xmi21:export" },
+        { "label": "XMI Export (v2.5)...", "id": "file.import.xmi.export", "command": "xmi25:export" }
       ]
     }
   ]

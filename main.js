@@ -23,8 +23,10 @@
 
 const xmi21reader = require('./xmi21-reader')
 const xmi21writer = require('./xmi21-writer')
+const xmi25writer = require('./xmi25-writer')
 require('./uml2-import')
 require('./uml2-export')
+require('./uml25-export')
 
 const XMI_FILE_FILTERS = [
   {name: 'XMI Files', extensions: ['xmi']},
@@ -58,10 +60,22 @@ function _handleXMI21Export (fullPath) {
     }
   }
 }
+function _handleXMI25Export (fullPath) {
+  if (fullPath) {
+    xmi25writer.saveToFile(fullPath)
+  } else {
+    var _filename = app.project.getProject().name
+    var filename = app.dialogs.showSaveDialog('Export Project As XMI', _filename + '.xmi', XMI_FILE_FILTERS)
+    if (filename) {
+      xmi25writer.saveToFile(filename)
+    }
+  }
+}
 
 function init () {
   app.commands.register('xmi:import', _handleXMI21Import)
-  app.commands.register('xmi:export', _handleXMI21Export)
+  app.commands.register('xmi21:export', _handleXMI21Export)
+  app.commands.register('xmi25:export', _handleXMI25Export)
 }
 
 exports.init = init
